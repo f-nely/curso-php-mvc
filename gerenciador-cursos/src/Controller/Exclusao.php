@@ -7,8 +7,11 @@ namespace Alura\Cursos\Controller;
 use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Helper\FlashMessegeTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class Exclusao implements InterfaceControladorRequisicao
+class Exclusao implements RequestHandlerInterface
 {
     use FlashMessegeTrait;
 
@@ -22,7 +25,7 @@ class Exclusao implements InterfaceControladorRequisicao
         $this->entityManager = (new EntityManagerCreator())->getEntityManager();
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $id = filter_input(
             INPUT_GET,
