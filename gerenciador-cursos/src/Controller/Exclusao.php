@@ -5,9 +5,9 @@ namespace Alura\Cursos\Controller;
 
 
 use Alura\Cursos\Entity\Curso;
-use Alura\Cursos\Helper\FlashMessegeTrait;
-use Alura\Cursos\Infra\EntityManagerCreator;
+use Alura\Cursos\Helper\FlashMessegeTrait;;
 use Doctrine\ORM\EntityManagerInterface;
+use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -28,16 +28,15 @@ class Exclusao implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = filter_input(
-            INPUT_GET,
-            'id',
+        $id = filter_var(
+            $request->getQueryParams()['id'],
             FILTER_VALIDATE_INT
         );
 
+        $resposta = new Response(302, ['Location' => '/listar-cursos']);
         if (is_null($id) || $id === false) {
             $this->defineMenssagem('danger', 'Curso inexistente');
-            header('Location: /listar-cursos');
-            return;
+            return $resposta;
         }
         $curso = $this->entityManager->getReference(Curso::class, $id);
         $this->entityManager->remove($curso);
