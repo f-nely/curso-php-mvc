@@ -7,6 +7,7 @@ namespace Alura\Cursos\Controller;
 use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Helper\FlashMessegeTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Persistencia implements InterfaceControladorRequisicao
 {
@@ -17,9 +18,9 @@ class Persistencia implements InterfaceControladorRequisicao
      */
     private $entityManager;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->entityManager = (new EntityManagerCreator())->getEntityManager();
+        $this->entityManager = $entityManager;
     }
 
     public function processaRequisicao(): void
