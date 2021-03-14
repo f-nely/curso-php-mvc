@@ -7,6 +7,7 @@ namespace Alura\Cursos\Controller;
 use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Helper\RenderizadorDeHtmlTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ListarCursos implements InterfaceControladorRequisicao
 {
@@ -14,9 +15,8 @@ class ListarCursos implements InterfaceControladorRequisicao
 
     private $repositorioDeCursos;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $entityManager = (new EntityManagerCreator())->getEntityManager();
         $this->repositorioDeCursos = $entityManager->getRepository(Curso::class);
     }
 
