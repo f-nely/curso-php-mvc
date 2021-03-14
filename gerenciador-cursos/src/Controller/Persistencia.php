@@ -5,10 +5,13 @@ namespace Alura\Cursos\Controller;
 
 
 use Alura\Cursos\Entity\Curso;
+use Alura\Cursos\Helper\FlashMessegeTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 
 class Persistencia implements InterfaceControladorRequisicao
 {
+    use FlashMessegeTrait;
+
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
@@ -31,15 +34,15 @@ class Persistencia implements InterfaceControladorRequisicao
             FILTER_VALIDATE_INT
         );
 
+        $tipo = 'success';
         if (!is_null($id) && $id !== false) {
             $curso->setId($id);
             $this->entityManager->merge($curso);
-            $_SESSION['mensagem'] = 'Curso atualizado com sucesso';
+            $this->defineMenssagem($tipo, 'Curso atualizado com sucesso');
         } else {
             $this->entityManager->persist($curso);
-            $_SESSION['mensagem'] = 'Curso inserido com sucesso';
+            $this->defineMenssagem($tipo, 'Curso inserido com sucesso');
         }
-        $_SESSION['tipo_mensagem'] = 'success';
 
         $this->entityManager->flush();
 
