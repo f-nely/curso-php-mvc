@@ -7,7 +7,6 @@ namespace Alura\Cursos\Controller;
 use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Helper\FlashMessegeTrait;
 use Alura\Cursos\Helper\RenderizadorDeHtmlTrait;
-use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\ORM\EntityManagerInterface;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -38,7 +37,7 @@ class FormularioEdicao implements RequestHandlerInterface
 
         $resposta = new Response(302, ['Location' => '/listar-cursos']);
         if (is_null($id) || $id === false) {
-            header('Location: /listar-cursos');
+            $this->defineMenssagem('danger', 'ID de curso inválido');
             return $resposta;
         }
         $curso = $this->repositorioCursos->find($id);
